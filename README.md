@@ -1,5 +1,5 @@
 # Calculadora de Juros Compostos
-
+Problema:Em quanto tempo investindo o cliente vai chegar a 1000000.
 Simulador interativo que mostra **quanto tempo leva para atingir R$ 1 milhão** ajustando aportes, taxas e fases.
 
 ## Passo a passo
