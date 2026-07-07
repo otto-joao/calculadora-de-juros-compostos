@@ -18,8 +18,8 @@ class Fase:
     @staticmethod
     def gerar_nome(indice: int) -> str:
         nomes = [
-            "Construcao", "Aceleracao", "Consolidacao", "Maturidade",
-            "Expansao", "Otimizacao", "Maximizacao", "Fase 8",
+            "Construção", "Aceleração", "Consolidação", "Maturidade",
+            "Expansão", "Otimização", "Maximização", "Fase 8",
             "Fase 9", "Fase 10",
         ]
         return nomes[indice] if indice < len(nomes) else f"Fase {indice + 1}"
@@ -81,20 +81,18 @@ def validar_parametros(taxa_mensal: float, alvo: float, fases: list[Fase]) -> li
         erros.append("Defina pelo menos uma fase de aporte.")
         return erros
     if taxa_mensal < 0:
-        erros.append("A taxa de juros nao pode ser negativa.")
+        erros.append("A taxa de juros não pode ser negativa.")
     if taxa_mensal == 0:
-        erros.append("Com taxa zero nao ha rendimento. A meta so sera atingida com aportes.")
+        erros.append("Com taxa zero não há rendimento. A meta só será atingida com aportes.")
     if alvo <= 0:
         erros.append("A meta deve ser um valor positivo.")
     fases_infinitas = [f for f in fases if f.meses is None]
     if len(fases_infinitas) > 1:
-        erros.append("Apenas a ultima fase pode ter duracao indefinida.")
+        erros.append("Apenas a última fase pode ter duração indefinida.")
     if all(f.meses is not None and f.meses == 0 for f in fases) and not fases_infinitas:
-        erros.append("Todas as fases tem duracao zero. Defina meses ou marque 'Ate a meta'.")
-    if not any(f.aporte > 0 for f in fases if f.meses is None) and \
-       not any(f.aporte > 0 and f.meses is not None and f.meses > 0 for f in fases) and \
-       not any(f.aporte > 0 for f in fases):
-        pass
+        erros.append("Todas as fases têm duração zero. Defina meses ou marque 'Até a meta'.")
+    if not any(f.aporte > 0 for f in fases):
+        erros.append("Pelo menos uma fase deve ter um aporte maior que zero.")
     return erros
 
 
@@ -128,7 +126,7 @@ def simular(
     if erros:
         return ResultadoSimulacao(
             saldo_final=saldo_inicial,
-            total_investido=saldo_inicial,
+            total_investido=0,
             total_juros=0,
             meses_total=mes_inicial,
             anos=mes_inicial // 12,
@@ -184,7 +182,7 @@ def simular(
             "Rendimento": round(rendimento, 2),
             "Saldo": round(saldo, 2),
             "Aportes_Acum": round(aportes_acum, 2),
-            "%Meta": round(saldo / alvo * 100, 2),
+            "%Meta": round(saldo / alvo * 100, 2) if alvo > 0 else 0,
         })
 
     for fase in fases:
@@ -203,7 +201,7 @@ def simular(
 
     if not atingiu_meta and meses_total >= max_meses:
         erro = (
-            f"Meta de R$ {alvo:,.2f} nao foi atingida em {max_meses} meses "
+            f"Meta de R$ {alvo:,.2f} não foi atingida em {max_meses} meses "
             f"({max_meses // 12} anos). Tente aumentar o aporte ou a taxa."
         )
     else:

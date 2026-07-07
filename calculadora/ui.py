@@ -55,7 +55,7 @@ class FaseRow(widgets.HBox):
         )
         self.indefinido_cb = widgets.Checkbox(
             value=indefinido,
-            description="Ate a meta",
+            description="Até a meta",
             layout=widgets.Layout(width="110px"),
             indent=False,
         )
@@ -170,10 +170,10 @@ def _mostrar_feedback_meta_nao_atingida(res: ResultadoSimulacao):
         '<div style="background:#fff8e1;padding:15px;border-radius:8px;border:1px solid #ffe082;'
         'font-family:monospace;margin-bottom:15px">'
     )
-    html += f"<h4 style='color:#e65100;margin:0 0 10px 0'>Meta de R$ {res.alvo:,.2f} nao atingida em {res.meses_total} meses ({res.anos}a {res.meses_resto}m)</h4>"
+    html += f"<h4 style='color:#e65100;margin:0 0 10px 0'>Meta de R$ {res.alvo:,.2f} não atingida em {res.meses_total} meses ({res.anos}a {res.meses_resto}m)</h4>"
     html += f"<p><b>Saldo final:</b> R$ {res.saldo_final:,.2f} ({res.saldo_final / res.alvo * 100:.1f}% da meta)</p>"
 
-    html += "<p><b>Projecao com aporte atual (ultima fase):</b></p>"
+    html += "<p><b>Projeção com aporte atual (última fase):</b></p>"
     html += "<ul>"
     for anos in [10, 20, 30]:
         proj = projetar_crescimento(res.ultima_taxa, res.ultimo_aporte, anos)
@@ -219,7 +219,7 @@ def _mostrar_resumo_executivo(res: ResultadoSimulacao):
 
 
 def _plot_evolucao(df: pd.DataFrame, alvo: float, fases: list[Fase]):
-    display(widgets.HTML("<h3>Evolucao do Patrimonio</h3>"))
+    display(widgets.HTML("<h3>Evolução do Patrimônio</h3>"))
     fig, ax = plt.subplots(figsize=(14, 6))
     anos_eixo = df["Ano"].values
 
@@ -247,7 +247,7 @@ def _plot_evolucao(df: pd.DataFrame, alvo: float, fases: list[Fase]):
         mticker.FuncFormatter(lambda x, _: f"R$ {x/1000:,.0f}k" if x >= 1000 else f"R$ {x:,.0f}"))
     ax.set_xlabel("Anos")
     ax.set_ylabel("Valor")
-    ax.set_title("Evolucao do Patrimonio ao Longo do Tempo")
+    ax.set_title("Evolução do Patrimônio ao Longo do Tempo")
     ax.legend(loc="upper left")
     ax.grid(axis="y", alpha=0.3)
     plt.tight_layout()
@@ -255,7 +255,7 @@ def _plot_evolucao(df: pd.DataFrame, alvo: float, fases: list[Fase]):
 
 
 def _plot_composicao(ti: float, tj: float):
-    display(widgets.HTML("<h3>Composicao do Valor Final</h3>"))
+    display(widgets.HTML("<h3>Composição do Valor Final</h3>"))
     labels = ["Total investido", "Rendimentos (juros)"]
     valores = [ti, tj]
     cores = ["#4CAF50", "#2196F3"]
@@ -263,7 +263,7 @@ def _plot_composicao(ti: float, tj: float):
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
     ax1.pie(valores, labels=labels, autopct="%1.1f%%", startangle=90,
             colors=cores, explode=(0, 0.05))
-    ax1.set_title("Composicao do Montante Final")
+    ax1.set_title("Composição do Montante Final")
 
     barras = ax2.bar(labels, valores, color=cores, width=0.5)
     offset = max(valores) * 0.02 if max(valores) > 0 else 100
@@ -279,7 +279,7 @@ def _plot_composicao(ti: float, tj: float):
 
 
 def _plot_inflacao(df: pd.DataFrame, alvo: float):
-    display(widgets.HTML("<h3>Inflacao \u2014 Valor Real vs Nominal</h3>"))
+    display(widgets.HTML("<h3>Inflação — Valor Real vs Nominal</h3>"))
     fig, ax = plt.subplots(figsize=(14, 6))
     anos_eixo = df["Ano"].values
 
@@ -299,7 +299,7 @@ def _plot_inflacao(df: pd.DataFrame, alvo: float):
         mticker.FuncFormatter(lambda x, _: f"R$ {x/1000:,.0f}k" if x >= 1000 else f"R$ {x:,.0f}"))
     ax.set_xlabel("Anos")
     ax.set_ylabel("Valor")
-    ax.set_title("Impacto da Inflacao no Poder de Compra")
+    ax.set_title("Impacto da Inflação no Poder de Compra")
     ax.legend(loc="upper left")
     ax.grid(axis="y", alpha=0.3)
     plt.tight_layout()
@@ -307,10 +307,10 @@ def _plot_inflacao(df: pd.DataFrame, alvo: float):
 
 
 def _plot_heatmap(alvo: float, estrategia_nome: str, fases_usuario: list[Fase] | None = None):
-    display(widgets.HTML("<h3>Mapa de Calor \u2014 Sensibilidade (Taxa vs Aporte)</h3>"))
+    display(widgets.HTML("<h3>Mapa de Calor — Sensibilidade (Taxa vs Aporte)</h3>"))
     display(widgets.HTML(
         "<p>Tempo em <b>anos</b> para atingir a meta variando taxa mensal "
-        "e aporte unico (aporte fixo, sem fases).</p>"))
+        "e aporte único (aporte fixo, sem fases).</p>"))
 
     aportes_usuario = [f.aporte for f in (fases_usuario or []) if f.aporte > 0]
     aporte_ref = max(aportes_usuario) if aportes_usuario else 1000
@@ -362,7 +362,7 @@ def _plot_heatmap(alvo: float, estrategia_nome: str, fases_usuario: list[Fase] |
 
 
 def _mostrar_planilha(df: pd.DataFrame, marcos: dict | None = None):
-    display(widgets.HTML("<h3>Planilha Mes a Mes</h3>"))
+    display(widgets.HTML("<h3>Planilha Mês a Mês</h3>"))
 
     df_display = df[["Mes", "Ano", "Fase", "Aporte", "Rendimento", "Saldo", "%Meta"]].copy()
 
@@ -379,9 +379,9 @@ def _mostrar_planilha(df: pd.DataFrame, marcos: dict | None = None):
         df_display.insert(0, "Marco", marco_col)
 
     df_display.columns = (
-        ["Marco", "Mes", "Ano", "Fase", "Aporte (R$)", "Rendimento (R$)", "Saldo (R$)", "% da Meta"]
+        ["Marco", "Mês", "Ano", "Fase", "Aporte (R$)", "Rendimento (R$)", "Saldo (R$)", "% da Meta"]
         if marcos else
-        ["Mes", "Ano", "Fase", "Aporte (R$)", "Rendimento (R$)", "Saldo (R$)", "% da Meta"]
+        ["Mês", "Ano", "Fase", "Aporte (R$)", "Rendimento (R$)", "Saldo (R$)", "% da Meta"]
     )
 
     with pd.option_context("display.max_rows", 60,
@@ -438,7 +438,7 @@ def _mostrar_comparacao_cenarios(
             dt = f"+{da}a{dr}m" if dm > 0 else f"-{da}a{dr}m"
 
         dados_cen.append({
-            "Cenario": nome_cen,
+            "Cenário": nome_cen,
             "Tempo": f'{r.anos}a{r.meses_resto}m',
             "Δ Tempo": dt,
             "Saldo": f"R$ {r.saldo_final:,.2f}",
@@ -446,7 +446,7 @@ def _mostrar_comparacao_cenarios(
         })
 
     df_cen = pd.DataFrame(dados_cen)
-    display(widgets.HTML("<h3>Comparacao de Cenarios</h3>"))
+    display(widgets.HTML("<h3>Comparação de Cenários</h3>"))
     display(df_cen.style.hide(axis="index"))
 
 
@@ -489,13 +489,14 @@ def atualizar(
         return
 
     if res.df is None or len(res.df) == 0:
-        display(widgets.HTML('<h3 style="color:red">Nenhum dado gerado na simulacao.</h3>'))
+        display(widgets.HTML('<h3 style="color:red">Nenhum dado gerado na simulação.</h3>'))
         return
 
     global ultimo_df
     ultimo_df = res.df
 
     _mostrar_resumo_executivo(res)
+    _plot_composicao(res.total_investido, res.total_juros)
 
     fases_visiveis = [f for f in fases if f.meses is not None]
     _plot_evolucao(res.df, alvo, fases_visiveis)
@@ -529,7 +530,7 @@ def criar_interface() -> widgets.VBox:
     mes_ini = widgets.IntText(
         value=0,
         min=0,
-        description="Mes inicial:",
+        description="Mês inicial:",
         style={"description_width": "100px"},
         layout=widgets.Layout(width="180px"),
     )
@@ -544,7 +545,7 @@ def criar_interface() -> widgets.VBox:
     estrategia_dd = widgets.Dropdown(
         options=[(v.nome, k) for k, v in ESTRATEGIAS.items()],
         value="aporte_depois",
-        description="Estrategia:",
+        description="Estratégia:",
         style={"description_width": "100px"},
         layout=widgets.Layout(width="400px"),
     )
@@ -593,10 +594,10 @@ def criar_interface() -> widgets.VBox:
     ])
 
     interface = widgets.VBox([
-        widgets.HTML("<h2>Parametros da Simulacao</h2>"),
+        widgets.HTML("<h2>Parâmetros da Simulação</h2>"),
         config_box,
         widgets.HTML("<hr><h3>Aportes por Fase</h3>"),
-        widgets.HTML("<p>Defina os aportes de cada fase. Marque 'Ate a meta' para a fase que deve durar ate o objetivo ser atingido.</p>"),
+        widgets.HTML("<p>Defina os aportes de cada fase. Marque 'Até a meta' para a fase que deve durar até o objetivo ser atingido.</p>"),
         fases_widget,
         simular_btn,
         output,
